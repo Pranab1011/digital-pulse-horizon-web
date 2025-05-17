@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for JK International
+				jk: {
+					dark: '#0B1120',
+					navy: '#151F30',
+					blue: '#1EAEDB',
+					skyblue: '#33C3F0',
+					lightblue: '#0EA5E9',
+					slate: '#222222',
+					light: '#F9FAFB'
 				}
 			},
 			borderRadius: {
@@ -84,11 +95,31 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'marquee': {
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(-100%)' }
+				},
+				'glow': {
+					'0%, 100%': { opacity: 1 },
+					'50%': { opacity: 0.6 }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'marquee': 'marquee 40s linear infinite',
+				'glow': 'glow 3s ease-in-out infinite',
+				'float': 'float 4s ease-in-out infinite'
+			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'hero-pattern': 'linear-gradient(to bottom, rgba(11, 17, 32, 0.9), rgba(11, 17, 32, 0.99)), url("https://images.unsplash.com/photo-1483058712412-4245e9b90334?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80")',
+				'tech-pattern': 'linear-gradient(to right, rgba(11, 17, 32, 0.9), rgba(21, 31, 48, 0.9)), url("https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80")'
 			}
 		}
 	},
