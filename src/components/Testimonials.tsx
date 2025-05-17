@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card } from "@/components/ui/card";
 
 const testimonials = [
@@ -42,11 +42,30 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
+    if (!scrollContainer || !isVisible) return;
 
     let animationId: number;
     let startTime: number | null = null;
@@ -70,15 +89,31 @@ const Testimonials = () => {
     
     animationId = requestAnimationFrame(animate);
     
-    return () => {
+    const handleMouseEnter = () => {
       cancelAnimationFrame(animationId);
     };
-  }, []);
+    
+    const handleMouseLeave = () => {
+      startTime = null;
+      animationId = requestAnimationFrame(animate);
+    };
+    
+    scrollContainer.addEventListener('mouseenter', handleMouseEnter);
+    scrollContainer.addEventListener('mouseleave', handleMouseLeave);
+    
+    return () => {
+      cancelAnimationFrame(animationId);
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
+        scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
+      }
+    };
+  }, [isVisible]);
 
   return (
-    <section id="testimonials" className="section-padding bg-jk-dark">
+    <section ref={sectionRef} id="testimonials" className="section-padding bg-jk-dark relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className={`text-center max-w-3xl mx-auto mb-16 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
           <h2 className="text-gradient mb-4">What Our Clients Say</h2>
           <p className="text-lg text-gray-300">
             Don't just take our word for it. Here's what our clients have to say about working with JK International.
@@ -95,11 +130,15 @@ const Testimonials = () => {
               {testimonials.concat(testimonials).map((testimonial, index) => (
                 <Card 
                   key={index} 
-                  className="min-w-[300px] max-w-[300px] bg-jk-navy border-jk-navy hover:border-jk-blue/50 transition-all duration-300 flex-shrink-0 snap-center"
+                  className={`min-w-[300px] max-w-[300px] bg-jk-navy border-jk-navy hover:border-jk-blue/50 transition-all duration-500 flex-shrink-0 snap-center hover:transform hover:scale-105 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}
+                  style={{ 
+                    animationDelay: `${index * 100}ms`,
+                    animationFillMode: 'both'
+                  }}
                 >
-                  <div className="p-6 flex flex-col h-full">
-                    <div className="mb-4">
-                      <svg className="h-6 w-6 text-jk-blue" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="p-6 flex flex-col h-full relative">
+                    <div className="mb-4 text-jk-blue animate-pulse-glow">
+                      <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M14.017 21v-7.391C14.017 10.339 16.356 8 19.626 8V21h-5.609zm-8.609 0V8h5.609v12.978h-5.609z" />
                       </svg>
                     </div>
@@ -110,13 +149,14 @@ const Testimonials = () => {
                       <img 
                         src={testimonial.image} 
                         alt={testimonial.name} 
-                        className="h-10 w-10 rounded-full object-cover mr-3"
+                        className="h-10 w-10 rounded-full object-cover mr-3 animate-float"
                       />
                       <div>
                         <p className="font-medium text-white">{testimonial.name}</p>
                         <p className="text-sm text-gray-400">{testimonial.position}</p>
                       </div>
                     </div>
+                    <div className="absolute top-0 left-0 right-0 h-1 rounded-t-md animate-shimmer"></div>
                   </div>
                 </Card>
               ))}

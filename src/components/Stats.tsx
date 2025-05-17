@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface CountUpProps {
   end: number;
@@ -40,14 +40,15 @@ const CountUp = ({ end, duration = 2000, suffix = "", prefix = "" }: CountUpProp
 };
 
 const statsData = [
-  { value: 500, label: "Projects Delivered", suffix: "+", prefix: "" },
-  { value: 98, label: "Client Satisfaction", suffix: "%", prefix: "" },
-  { value: 12, label: "Years of Experience", suffix: "+", prefix: "" },
-  { value: 25, label: "Countries Served", suffix: "+", prefix: "" }
+  { value: 500, label: "Projects Delivered", suffix: "+", prefix: "", delay: 100 },
+  { value: 98, label: "Client Satisfaction", suffix: "%", prefix: "", delay: 300 },
+  { value: 12, label: "Years of Experience", suffix: "+", prefix: "", delay: 500 },
+  { value: 25, label: "Countries Served", suffix: "+", prefix: "", delay: 700 }
 ];
 
 const Stats = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const statRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -60,20 +61,27 @@ const Stats = () => {
       { threshold: 0.25 }
     );
     
-    const element = document.getElementById('stats');
+    const element = statRef.current;
     if (element) observer.observe(element);
     
     return () => observer.disconnect();
   }, []);
   
   return (
-    <section id="stats" className="py-20 bg-gradient-to-r from-jk-dark to-jk-navy">
+    <section id="stats" ref={statRef} className="py-20 bg-gradient-to-r from-jk-dark to-jk-navy overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {statsData.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-jk-blue mb-2">
+              <div 
+                key={index} 
+                className={`text-center transform ${isVisible ? 'animate-bounce-in' : 'opacity-0'}`}
+                style={{ 
+                  animationDelay: isVisible ? `${stat.delay}ms` : '0ms',
+                  animationFillMode: 'both'
+                }}
+              >
+                <div className="text-4xl md:text-5xl font-bold text-jk-blue mb-2 animate-pulse-glow">
                   {isVisible ? (
                     <CountUp end={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
                   ) : (
