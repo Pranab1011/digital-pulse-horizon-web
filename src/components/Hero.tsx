@@ -1,13 +1,11 @@
 
 import { ArrowRight } from "lucide-react";
-import ScheduleCallButton from './ScheduleCallButton';
 import { useEffect, useState } from "react";
+import ScheduleCallButton from './ScheduleCallButton';
 
 const Hero = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [previousSlide, setPreviousSlide] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   
   const slides = [
     {
@@ -34,52 +32,26 @@ const Hero = () => {
     // Trigger animations after component mounts
     setIsLoaded(true);
     
-    // Set up the slideshow timer
+    // Set up the slideshow
     const interval = setInterval(() => {
-      // Store previous slide before updating
-      setPreviousSlide(currentSlide);
-      setIsAnimating(true);
-      
-      // Update current slide
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-      
-      // Reset animation flag after transition completes
-      setTimeout(() => {
-        setIsAnimating(false);
-      }, 1000);
     }, 5000);
     
     // Clean up interval on component unmount
     return () => clearInterval(interval);
-  }, [currentSlide]);
-
-  const currentSlideData = slides[currentSlide];
-  const nextSlideData = slides[(currentSlide + 1) % slides.length];
+  }, []);
 
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden" id="hero">
+    <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden" id="hero">
       {/* Background with overlay */}
-      <div className="absolute inset-0 overflow-hidden transition-all duration-1000 ease-in-out">
-        {/* Current slide background */}
-        <div
-          className={`absolute inset-0 transition-opacity duration-1000 ${isAnimating ? 'opacity-0' : 'opacity-100'}`}
-          style={{
-            backgroundImage: `linear-gradient(to bottom, rgba(11, 17, 32, 0.7), rgba(11, 17, 32, 0.8)), url(${currentSlideData.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        ></div>
-        
-        {/* Next slide background (transitioning in) */}
-        <div
-          className={`absolute inset-0 transition-opacity duration-1000 ${isAnimating ? 'opacity-100' : 'opacity-0'}`}
-          style={{
-            backgroundImage: `linear-gradient(to bottom, rgba(11, 17, 32, 0.7), rgba(11, 17, 32, 0.8)), url(${nextSlideData.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        ></div>
-        
+      <div 
+        className="absolute inset-0 transition-all duration-1000 ease-in-out"
+        style={{
+          backgroundImage: `linear-gradient(to bottom, rgba(11, 17, 32, 0.7), rgba(11, 17, 32, 0.8)), url(${slides[currentSlide].image})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-jk-blue/10 via-jk-blue/5 to-transparent"></div>
         <div className="absolute inset-0 bg-[url('https://assets.website-files.com/642fc718df4c6af7f57d6a22/6430beb91d6d23adc72c99a6_grid-bg-p-2000.png')] opacity-10"></div>
       </div>
@@ -87,39 +59,16 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex justify-center">
           <div className="w-full max-w-3xl space-y-8">
-            <div className="relative min-h-[240px] md:min-h-[200px] overflow-hidden">
-              {/* Current slide (exiting to the left) */}
-              <div
-                className={`transition-all duration-700 ease-in-out absolute w-full ${
-                  isAnimating ? "transform -translate-x-full opacity-0" : "transform translate-x-0 opacity-100"
-                }`}
-              >
-                <h1 className={`font-bold transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}>
-                  <span className="text-gradient animate-typing inline-block">{currentSlideData.title}</span>
-                  <br />
-                  <span className="text-white inline-block" style={{ animationDelay: '0.5s' }}>{currentSlideData.subtitle}</span>
-                </h1>
-                <p className={`text-lg text-gray-300 md:text-xl mt-4 max-w-2xl transition-all duration-700 delay-300 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
-                  style={{ transitionDelay: '0.3s' }}>
-                  {currentSlideData.description}
-                </p>
-              </div>
-              
-              {/* Next slide (entering from right) */}
-              <div
-                className={`transition-all duration-700 ease-in-out absolute w-full ${
-                  isAnimating ? "transform translate-x-0 opacity-100" : "transform translate-x-full opacity-0"
-                }`}
-              >
-                <h1 className="font-bold">
-                  <span className="text-gradient inline-block">{nextSlideData.title}</span>
-                  <br />
-                  <span className="text-white inline-block">{nextSlideData.subtitle}</span>
-                </h1>
-                <p className="text-lg text-gray-300 md:text-xl mt-4 max-w-2xl">
-                  {nextSlideData.description}
-                </p>
-              </div>
+            <div>
+              <h1 className={`font-bold transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}>
+                <span className="text-gradient animate-typing inline-block">{slides[currentSlide].title}</span>
+                <br />
+                <span className="text-white inline-block" style={{ animationDelay: '0.5s' }}>{slides[currentSlide].subtitle}</span>
+              </h1>
+              <p className={`text-lg text-gray-300 md:text-xl mt-4 max-w-2xl transition-all duration-700 delay-300 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
+                style={{ transitionDelay: '0.3s' }}>
+                {slides[currentSlide].description}
+              </p>
             </div>
             
             <div className={`flex flex-wrap justify-center gap-4 pt-4 transition-all duration-700 delay-500 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
