@@ -39,7 +39,7 @@ const Hero = () => {
     
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 600); // Match this with the CSS transition duration
+    }, 800); // Increased duration for smoother transitions
   };
   
   useEffect(() => {
@@ -49,7 +49,7 @@ const Hero = () => {
     // Set up the slideshow
     const interval = setInterval(() => {
       changeSlide((currentSlide + 1) % slides.length);
-    }, 7000); // Increased time between slides for better UX
+    }, 8000); // Increased time between slides
     
     // Clean up interval on component unmount
     return () => clearInterval(interval);
@@ -57,19 +57,21 @@ const Hero = () => {
 
   return (
     <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden" id="hero">
-      {/* Background layers with smooth transitions */}
+      {/* Background layers with improved transitions */}
       {slides.map((slide, index) => (
         <div 
           key={`bg-${index}`}
-          className="absolute inset-0 transition-all duration-600 ease-in-out"
+          className={`absolute inset-0 transition-all duration-800 ease-in-out ${
+            currentSlide === index ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+          }`}
           style={{
             backgroundImage: `linear-gradient(to bottom, rgba(11, 17, 32, 0.7), rgba(11, 17, 32, 0.8)), url(${slide.image})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            opacity: currentSlide === index ? 1 : 0,
-            zIndex: currentSlide === index ? 1 : 0,
-            transform: `scale(${currentSlide === index ? 1 : 1.05})`,
-            transition: 'opacity 0.6s ease-in-out, transform 0.6s ease-in-out'
+            transitionProperty: 'opacity, transform',
+            transitionDuration: '0.8s',
+            transitionTimingFunction: 'ease-in-out',
+            zIndex: 0
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-jk-blue/10 via-jk-blue/5 to-transparent"></div>
@@ -79,35 +81,38 @@ const Hero = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex justify-center">
-          <div className="w-full max-w-3xl space-y-8">
+          <div className="w-full max-w-3xl">
             {slides.map((slide, index) => (
               <div 
                 key={`slide-${index}`} 
-                className={`transition-all duration-500 absolute w-full ${
-                  currentSlide === index 
-                    ? 'opacity-100 translate-x-0' 
-                    : prevSlide < currentSlide || (prevSlide === slides.length - 1 && currentSlide === 0)
-                      ? 'opacity-0 translate-x-full' 
-                      : 'opacity-0 -translate-x-full'
-                }`}
+                className="transition-all duration-800 absolute w-full"
                 style={{
-                  display: (currentSlide === index || prevSlide === index) ? 'block' : 'none',
-                  transitionDelay: currentSlide === index ? '0.1s' : '0s'
+                  opacity: currentSlide === index ? 1 : 0,
+                  transform: currentSlide === index 
+                    ? 'translateX(0)' 
+                    : index > currentSlide || (currentSlide === slides.length - 1 && index === 0)
+                      ? 'translateX(100px)' 
+                      : 'translateX(-100px)',
+                  transitionProperty: 'opacity, transform',
+                  transitionDuration: '0.8s',
+                  transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                  pointerEvents: currentSlide === index ? 'auto' : 'none',
+                  zIndex: currentSlide === index ? 2 : 1
                 }}
               >
-                <h1 className="font-bold">
+                <h1 className="font-bold mb-6">
                   <span className="text-gradient inline-block">{slide.title}</span>
                   <br />
                   <span className="text-white inline-block">{slide.subtitle}</span>
                 </h1>
-                <p className="text-lg text-gray-300 md:text-xl mt-4 max-w-2xl">
+                <p className="text-lg text-gray-300 md:text-xl mt-4 max-w-2xl mb-12">
                   {slide.description}
                 </p>
               </div>
             ))}
             
-            <div className={`flex flex-wrap justify-center gap-4 pt-4 transition-all duration-700 delay-500 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
-                 style={{ transitionDelay: '0.6s', marginTop: '200px' }}>
+            <div className="mt-48 lg:mt-56 flex flex-wrap justify-center gap-4 pt-4 transition-all duration-700"
+                 style={{ transitionDelay: '0.6s', opacity: isLoaded ? 1 : 0, transform: isLoaded ? 'translateY(0)' : 'translateY(20px)' }}>
               <ScheduleCallButton size="lg" className="animate-pulse-glow" />
               <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center text-jk-blue hover:text-jk-skyblue transition-colors group"
@@ -119,8 +124,8 @@ const Hero = () => {
           </div>
         </div>
         
-        <div className={`mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 transition-all duration-700 delay-1000 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
-             style={{ transitionDelay: '1.2s' }}>
+        <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 transition-all duration-700"
+             style={{ transitionDelay: '1.2s', opacity: isLoaded ? 1 : 0, transform: isLoaded ? 'translateY(0)' : 'translateY(20px)' }}>
           {["Google", "Microsoft", "IBM", "Oracle"].map((partner, index) => (
             <div 
               key={partner} 
@@ -132,16 +137,15 @@ const Hero = () => {
           ))}
         </div>
         
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => changeSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                currentSlide === index ? "bg-jk-blue w-6" : "bg-white/50"
+                currentSlide === index ? "bg-jk-blue w-6" : "bg-white/50 hover:bg-white/80"
               }`}
               aria-label={`Go to slide ${index + 1}`}
-              disabled={isTransitioning}
             />
           ))}
         </div>
