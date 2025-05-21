@@ -1,6 +1,6 @@
 
 import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ScheduleCallButton from './ScheduleCallButton';
 
 const Hero = () => {
@@ -30,7 +30,7 @@ const Hero = () => {
     }
   ];
   
-  const changeSlide = (index: number) => {
+  const changeSlide = useCallback((index) => {
     if (isTransitioning || index === currentSlide) return;
     
     setIsTransitioning(true);
@@ -40,7 +40,7 @@ const Hero = () => {
     setTimeout(() => {
       setIsTransitioning(false);
     }, 800);
-  };
+  }, [currentSlide, isTransitioning]);
   
   useEffect(() => {
     // Trigger animations after component mounts
@@ -54,9 +54,7 @@ const Hero = () => {
     
     // Clean up interval on component unmount
     return () => clearInterval(interval);
-    // Note: We deliberately leave currentSlide out of the dependency array
-    // to avoid recreating the interval on each slide change
-  }, []);
+  }, [currentSlide, changeSlide, slides.length]);
 
   return (
     <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden" id="hero">
