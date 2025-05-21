@@ -14,19 +14,19 @@ const Hero = () => {
       title: "Digital Transformation",
       subtitle: "For Your Business",
       description: "JK International delivers cutting-edge digital solutions that transform businesses. We combine innovative technology with strategic expertise to help your organization thrive in today's digital landscape.",
-      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+      image: "/lovable-uploads/22a4c68a-fdc1-4dbe-aeb9-7bb056bf7109.png"
     },
     {
       title: "We Handle",
       subtitle: "Your Digital Process",
       description: "So you can focus on what's important. Our team manages the complexities of digital implementation while you concentrate on your core business objectives and growth.",
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+      image: "/lovable-uploads/bc423c22-4b14-475c-abef-2769746a305f.png"
     },
     {
       title: "Don't Spend Months",
       subtitle: "On Digital Operations",
       description: "When you can do it in days. Our efficient solutions streamline your IT operations and digital transformation, saving you valuable time and resources.",
-      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+      image: "/lovable-uploads/945c758e-0254-49aa-ad0b-97239f0491c8.png"
     }
   ];
   
