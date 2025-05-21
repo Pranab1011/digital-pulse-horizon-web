@@ -40,6 +40,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <nav className="flex items-center space-x-6">
               <button onClick={() => scrollToSection('services')} className="text-white hover:text-jk-blue transition-colors">Services</button>
+              <Link to="/courses" className="text-white hover:text-jk-blue transition-colors">Courses</Link>
               <button onClick={() => scrollToSection('why-us')} className="text-white hover:text-jk-blue transition-colors">Why Us</button>
               <button onClick={() => scrollToSection('how-it-works')} className="text-white hover:text-jk-blue transition-colors">How It Works</button>
               <button onClick={() => scrollToSection('testimonials')} className="text-white hover:text-jk-blue transition-colors">Testimonials</button>
@@ -66,6 +67,7 @@ const Navbar = () => {
           <div className="md:hidden py-4 bg-jk-navy/95 absolute left-0 right-0 top-full border-t border-gray-800">
             <nav className="flex flex-col space-y-4 px-4">
               <button onClick={() => scrollToSection('services')} className="text-white hover:text-jk-blue transition-colors text-left py-2">Services</button>
+              <Link to="/courses" className="text-white hover:text-jk-blue transition-colors text-left py-2">Courses</Link>
               <button onClick={() => scrollToSection('why-us')} className="text-white hover:text-jk-blue transition-colors text-left py-2">Why Us</button>
               <button onClick={() => scrollToSection('how-it-works')} className="text-white hover:text-jk-blue transition-colors text-left py-2">How It Works</button>
               <button onClick={() => scrollToSection('testimonials')} className="text-white hover:text-jk-blue transition-colors text-left py-2">Testimonials</button>
