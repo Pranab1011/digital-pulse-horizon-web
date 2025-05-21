@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [previousSlide, setPreviousSlide] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
   
   const slides = [
     {
@@ -34,41 +36,71 @@ const Hero = () => {
     
     // Set up the slideshow timer
     const interval = setInterval(() => {
+      // Store previous slide before updating
+      setPreviousSlide(currentSlide);
+      setIsAnimating(true);
+      
+      // Update current slide
       setCurrentSlide((prev) => (prev + 1) % slides.length);
+      
+      // Reset animation flag after transition completes
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 1000);
     }, 5000);
     
     // Clean up interval on component unmount
     return () => clearInterval(interval);
-  }, []);
+  }, [currentSlide]);
 
   const currentSlideData = slides[currentSlide];
 
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden" id="hero">
-      <div className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
-           style={{ 
-             backgroundImage: `url('${currentSlideData.image}')`,
-             opacity: isLoaded ? 1 : 0
-           }}>
-        <div className="absolute inset-0 bg-gradient-to-r from-jk-dark via-jk-dark/95 to-jk-dark/90"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-jk-navy to-jk-dark transition-all duration-1000 ease-in-out">
+        <div className="absolute inset-0 bg-gradient-to-r from-jk-blue/10 via-jk-blue/5 to-transparent"></div>
+        <div className="absolute inset-0 bg-[url('https://assets.website-files.com/642fc718df4c6af7f57d6a22/6430beb91d6d23adc72c99a6_grid-bg-p-2000.png')] opacity-10"></div>
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 max-w-2xl">
-            <div className="min-h-[160px] md:min-h-[140px]">
-              <h1 className={`font-bold transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}>
-                <span className="text-gradient animate-typing inline-block">{currentSlideData.title}</span>
-                <br />
-                <span className="text-white inline-block" style={{ animationDelay: '0.5s' }}>{currentSlideData.subtitle}</span>
-              </h1>
-              <p className={`text-lg text-gray-300 md:text-xl transition-all duration-700 delay-300 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
-                 style={{ transitionDelay: '0.3s' }}>
-                {currentSlideData.description}
-              </p>
+        <div className="flex justify-center">
+          <div className="w-full max-w-3xl space-y-8">
+            <div className="relative min-h-[180px] md:min-h-[160px] overflow-hidden">
+              {/* Current slide */}
+              <div
+                className={`transform transition-all duration-700 ease-in-out absolute w-full ${
+                  isAnimating ? "translate-x-[-100%] opacity-0" : "translate-x-0 opacity-100"
+                }`}
+              >
+                <h1 className={`font-bold transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}>
+                  <span className="text-gradient animate-typing inline-block">{currentSlideData.title}</span>
+                  <br />
+                  <span className="text-white inline-block" style={{ animationDelay: '0.5s' }}>{currentSlideData.subtitle}</span>
+                </h1>
+                <p className={`text-lg text-gray-300 md:text-xl transition-all duration-700 delay-300 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
+                  style={{ transitionDelay: '0.3s' }}>
+                  {currentSlideData.description}
+                </p>
+              </div>
+              
+              {/* Incoming slide (appearing from right) */}
+              <div
+                className={`transform transition-all duration-700 ease-in-out absolute w-full ${
+                  isAnimating ? "translate-x-0 opacity-100" : "translate-x-[100%] opacity-0"
+                }`}
+              >
+                <h1 className="font-bold">
+                  <span className="text-gradient inline-block">{slides[(currentSlide + 1) % slides.length].title}</span>
+                  <br />
+                  <span className="text-white inline-block">{slides[(currentSlide + 1) % slides.length].subtitle}</span>
+                </h1>
+                <p className="text-lg text-gray-300 md:text-xl">
+                  {slides[(currentSlide + 1) % slides.length].description}
+                </p>
+              </div>
             </div>
             
-            <div className={`flex flex-wrap gap-4 pt-4 transition-all duration-700 delay-500 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
+            <div className={`flex flex-wrap justify-center gap-4 pt-4 transition-all duration-700 delay-500 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-y-8'}`}
                  style={{ transitionDelay: '0.6s' }}>
               <ScheduleCallButton size="lg" className="animate-pulse-glow" />
               <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
@@ -78,15 +110,6 @@ const Hero = () => {
                 <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
-          </div>
-          
-          <div className={`hidden md:block transition-all duration-1000 delay-700 ${isLoaded ? 'opacity-100' : 'opacity-0 translate-x-12'}`}
-               style={{ transitionDelay: '0.9s' }}>
-            <img 
-              src="https://cdn.prod.website-files.com/678a08d17a6b88bae4e2d8c2/678a08d17a6b88bae4e2e978_emergex-image.png" 
-              alt="Digital Transformation" 
-              className="w-full max-w-md mx-auto animate-float drop-shadow-2xl"
-            />
           </div>
         </div>
         
