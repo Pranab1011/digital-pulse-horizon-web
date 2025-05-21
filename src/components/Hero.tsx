@@ -39,7 +39,7 @@ const Hero = () => {
     
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 800); // Increased duration for smoother transitions
+    }, 800);
   };
   
   useEffect(() => {
@@ -48,12 +48,15 @@ const Hero = () => {
     
     // Set up the slideshow
     const interval = setInterval(() => {
-      changeSlide((currentSlide + 1) % slides.length);
-    }, 8000); // Increased time between slides
+      const nextSlide = (currentSlide + 1) % slides.length;
+      changeSlide(nextSlide);
+    }, 8000);
     
     // Clean up interval on component unmount
     return () => clearInterval(interval);
-  }, [currentSlide]);
+    // Note: We deliberately leave currentSlide out of the dependency array
+    // to avoid recreating the interval on each slide change
+  }, []);
 
   return (
     <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden" id="hero">
