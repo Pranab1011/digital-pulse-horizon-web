@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScheduleCallButton from './ScheduleCallButton';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,7 +31,9 @@ const Navbar = () => {
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
           <div className="flex items-center">
-            <span className="text-2xl font-bold text-white">JK<span className="text-jk-blue">International</span></span>
+            <Link to="/" className="text-2xl font-bold text-white">
+              JK<span className="text-jk-blue">International</span>
+            </Link>
           </div>
           
           {/* Desktop Navigation */}
