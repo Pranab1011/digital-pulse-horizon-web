@@ -87,12 +87,27 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Column 4 - Newsletter */}
+          {/* Column 4 - Contact Information */}
           <div>
+            <h3 className="text-lg font-semibold text-white mb-4">Contact Us</h3>
+            <address className="not-italic text-gray-400 mb-4 space-y-2">
+              <p>
+                #15-01, Sim Lim Tower, 
+                <br />10 Jln Besar, 
+                <br />Singapore 208787
+              </p>
+              <p>
+                <a href="tel:+6584508461" className="hover:text-jk-blue transition-colors">+65 8450 8461</a>
+                <br />
+                <a href="tel:+6594260313" className="hover:text-jk-blue transition-colors">+65 9426 0313</a>
+              </p>
+              <p>
+                <a href="mailto:jkinternationaldigitaltrends@gmail.com" className="hover:text-jk-blue transition-colors break-words">
+                  jkinternationaldigitaltrends@gmail.com
+                </a>
+              </p>
+            </address>
             <h3 className="text-lg font-semibold text-white mb-4">Subscribe to Our Newsletter</h3>
-            <p className="text-gray-400 mb-4">
-              Stay updated with the latest digital trends and insights.
-            </p>
             <form onSubmit={handleSubscribe} className="flex gap-2">
               <Input 
                 type="email" 
