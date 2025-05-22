@@ -1,4 +1,3 @@
-
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import ScheduleCallButton from './ScheduleCallButton';
@@ -50,7 +49,7 @@ const Hero = () => {
     const interval = setInterval(() => {
       const nextSlide = (currentSlide + 1) % slides.length;
       changeSlide(nextSlide);
-    }, 8000);
+    }, 4000); // Changed from 8000 to 4000 (4 seconds)
     
     // Clean up interval on component unmount
     return () => clearInterval(interval);
