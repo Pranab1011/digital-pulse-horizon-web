@@ -20,7 +20,7 @@ const ScheduleCallButton = ({
     <Button 
       size={size} 
       variant={variant}
-      className={`bg-jk-blue hover:bg-jk-skyblue text-white flex items-center gap-2 transition-all duration-300 ${isHovering ? 'shadow-lg shadow-jk-blue/30' : ''} ${className}`}
+      className={`bg-jk-blue hover:bg-jk-skyblue text-white flex items-center justify-center gap-2 transition-all duration-300 ${isHovering ? 'shadow-lg shadow-jk-blue/30' : ''} ${className}`}
       onClick={() => window.location.href = "#contact"}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}

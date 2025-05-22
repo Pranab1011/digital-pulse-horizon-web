@@ -1,3 +1,4 @@
+
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import ScheduleCallButton from './ScheduleCallButton';
@@ -111,11 +112,12 @@ const Hero = () => {
               </div>
             ))}
             
-            <div className="mt-48 lg:mt-56 flex flex-wrap justify-center gap-4 pt-4 transition-all duration-700"
+            {/* Added additional vertical spacing for mobile and improved layout structure */}
+            <div className="mt-64 sm:mt-56 lg:mt-56 flex flex-col sm:flex-row items-center sm:items-start sm:justify-center gap-4 pt-4 transition-all duration-700"
                  style={{ transitionDelay: '0.6s', opacity: isLoaded ? 1 : 0, transform: isLoaded ? 'translateY(0)' : 'translateY(20px)' }}>
-              <ScheduleCallButton size="lg" className="animate-pulse-glow" />
+              <ScheduleCallButton size="lg" className="animate-pulse-glow w-full sm:w-auto" />
               <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-                className="inline-flex items-center text-jk-blue hover:text-jk-skyblue transition-colors group"
+                className="inline-flex items-center justify-center mt-3 sm:mt-0 text-jk-blue hover:text-jk-skyblue transition-colors group w-full sm:w-auto"
               >
                 Explore Our Services 
                 <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
