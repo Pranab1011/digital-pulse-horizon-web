@@ -69,8 +69,8 @@ const ContactForm = () => {
                 </div>
                 <div>
                   <h4 className="text-lg font-medium text-white">Phone</h4>
-                  <p className="text-gray-300">+1 (555) 123-4567</p>
-                  <p className="text-gray-300">+1 (555) 987-6543</p>
+                  <p className="text-gray-300">+65 8450 8461</p>
+                  <p className="text-gray-300">+65 9426 0313</p>
                 </div>
               </div>
               
@@ -80,8 +80,7 @@ const ContactForm = () => {
                 </div>
                 <div>
                   <h4 className="text-lg font-medium text-white">Email</h4>
-                  <p className="text-gray-300">info@jkinternational.com</p>
-                  <p className="text-gray-300">support@jkinternational.com</p>
+                  <p className="text-gray-300">jkinternationaldigitaltrends@gmail.com</p>
                 </div>
               </div>
               
@@ -91,8 +90,8 @@ const ContactForm = () => {
                 </div>
                 <div>
                   <h4 className="text-lg font-medium text-white">Location</h4>
-                  <p className="text-gray-300">123 Digital Avenue</p>
-                  <p className="text-gray-300">New York, NY 10001</p>
+                  <p className="text-gray-300">#15-01, Sim Lim Tower,</p>
+                  <p className="text-gray-300">10 Jln Besar, Singapore 208787</p>
                 </div>
               </div>
             </div>
